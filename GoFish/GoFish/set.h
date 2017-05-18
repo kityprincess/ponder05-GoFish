@@ -9,7 +9,7 @@ template <class T>
 class Set
 {
 public:
-   
+
    // constructors/destructors
    Set(int in_capacity = 0);
    Set(const Set<T> & source);
@@ -30,8 +30,8 @@ public:
    SetIterator<T> find(T & in_item) const;
    SetIterator<T> begin() const;
    SetIterator<T> end() const;
-   SetConstIterator<T> cbegin() const { return SetConstIterator<T>(); }
-   SetConstIterator<T> cend() const { return SetConstIterator<T>(); }
+   SetConstIterator<T> cbegin() const { return SetConstIterator<T>(m_data); }
+   SetConstIterator<T> cend() const { return SetConstIterator<T>(m_data + m_size); }
 
    // operations
    Set<T> operator && (const Set<T> & rhs) const;
@@ -71,13 +71,13 @@ Set<T> ::Set(int in_capacity)
 
    if (m_capacity)
       allocate(m_capacity);
-   
+
    assert(isValid());
 }
 
 /*************************************
 * SET :: COPY CONSTRUCTOR
-* Creates a new instance of a Set 
+* Creates a new instance of a Set
 * by copying an existing set
 *************************************/
 template<class T>
@@ -116,7 +116,7 @@ inline Set<T>& Set<T>::operator=(const Set<T>& source)
    deleteData();
 
    copy(source);
-      
+
    assert(isValid());
 
    return *this;
@@ -125,7 +125,7 @@ inline Set<T>& Set<T>::operator=(const Set<T>& source)
 /*************************************
 * SET :: INSERT
 * Inserts an item into the set, if it
-* doesn't exist already. Expands the 
+* doesn't exist already. Expands the
 * capacity of the set if necessary to
 * make room.
 *************************************/
@@ -142,13 +142,13 @@ void Set<T> ::insert(const T & in_item)
    {
       resize();
    }
-   
+
    assert(m_size < m_capacity);
 
    // Now, earlier, we used findIndex to check if the item
    // already exists. If we're here, we know that it doesn't
    // and we also know where it should go, thanks to findIndex
-   
+
    // First, make room for the new item
    assert(itemIndex >= 0);
    for (int i = m_size; i > itemIndex; i--)
@@ -232,7 +232,7 @@ inline Set<T> Set<T>::operator&&(const Set<T>& rhs) const
    assert(rhs.isValid());
 
    Set<T> result;
-   
+
    // If either side is empty, we can exit now
    if (empty() || rhs.empty())
       return result;
@@ -267,7 +267,7 @@ inline Set<T> Set<T>::operator&&(const Set<T>& rhs) const
 
 /*************************************
 * SET :: UNION
-* Creates a new set with all of the 
+* Creates a new set with all of the
 * elements that appear both in this set
 * and another (passed as a parameter)
 *************************************/
@@ -376,7 +376,7 @@ inline bool Set<T>::isValid() const
 
 /*************************************
 * SET :: ISDATASORTED
-* Confirms that all elements of the 
+* Confirms that all elements of the
 * set are in the proper sort order
 *************************************/
 template<class T>
@@ -443,7 +443,7 @@ inline void Set<T>::copy(const Set<T>& source)
 * SET :: COPYDATA
 * Copies the data from an array into
 * this set's data buffer. Note: this
-* does not attempt to allocate the 
+* does not attempt to allocate the
 * buffer or ensure it has sufficient
 * capacity; that must be done separately
 *************************************/
@@ -484,7 +484,7 @@ inline void Set<T>::allocate(int in_capacity)
 /*************************************
 * SET :: RESIZE
 * Doubles the capacity of the data buffer
-* and copies over all content from the 
+* and copies over all content from the
 * old buffer into the new.
 *************************************/
 template<class T>
@@ -503,13 +503,13 @@ inline void Set<T>::resize()
    }
 
    m_capacity = capacity;
-   
+
    assert(isValid());
 }
 
 /*************************************
 * SET :: ADDTOEND
-* Adds an item onto the end of the 
+* Adds an item onto the end of the
 * set. Does not check to see that it
 * is unique across the entire set.
 * Resizes the set if needed.
@@ -529,7 +529,7 @@ inline void Set<T>::addToEnd(const T & in_item)
 
    m_data[m_size] = in_item;
    m_size++;
-   
+
    assert(isValid());
    assert(isDataSorted());
 }
