@@ -1,9 +1,20 @@
+/***********************************************************************
+* Program:
+*    Week 05, Set
+*    Brother JonesL, CS 235
+* Author:
+*    Shayla Nelson, Matthew Burr, Kimberly Stowe, Bryan Lopez
+* Summary:
+*    This is the set class. This program allows the set class we have
+*     created to act like the standard library's set class.
+************************************************************************/
+
 #ifndef SET_H
 #define SET_H
 
-#include <cassert>
-#include "setIterator.h"
-#include "setConstIterator.h"
+#include <cassert>               // to assert our data
+#include "setIterator.h"         // to allow use of our setIterator     
+#include "setConstIterator.h"    // to allow use of our const setIterator
 
 template <class T>
 class Set
@@ -36,7 +47,7 @@ public:
    // operations
    Set<T> operator && (const Set<T> & rhs) const;
    Set<T> operator || (const Set<T> & rhs) const;
-   Set<T> operator - (const Set<T> & rhs) const { return Set<T>(); }
+   Set<T> operator - (const Set<T> & rhs) const;
 
 private:
    // internal helper functions
@@ -62,7 +73,7 @@ private:
 * an optional capacity
 *************************************/
 template <class T>
-Set<T> ::Set(int in_capacity)
+Set<T> :: Set(int in_capacity)
    : m_capacity(in_capacity), m_size(0), m_data(NULL)
 {
    assert(m_capacity >= 0);
@@ -81,7 +92,7 @@ Set<T> ::Set(int in_capacity)
 * by copying an existing set
 *************************************/
 template<class T>
-Set<T>::Set(const Set<T>& source)
+Set<T> :: Set(const Set<T> & source)
    : m_capacity(source.m_capacity), m_size(source.m_size), m_data(NULL)
 {
    assert(source.isValid());
@@ -96,7 +107,7 @@ Set<T>::Set(const Set<T>& source)
 * Destroys a set and deallocates its memory
 *************************************/
 template<class T>
-inline Set<T>::~Set()
+Set<T> :: ~Set()
 {
    deleteData();
 }
@@ -106,7 +117,7 @@ inline Set<T>::~Set()
 * Copies another set into this one
 *************************************/
 template<class T>
-inline Set<T>& Set<T>::operator=(const Set<T>& source)
+Set<T> & Set<T> :: operator = (const Set<T> & source)
 {
    if (this == &source) // copying onto ourself, do nothing
       return *this;
@@ -130,7 +141,7 @@ inline Set<T>& Set<T>::operator=(const Set<T>& source)
 * make room.
 *************************************/
 template <class T>
-void Set<T> ::insert(const T & in_item)
+void Set<T> :: insert(const T & in_item)
 {
    // first we see if we already have the item; if so, we can just quit
    int itemIndex = 0;
@@ -168,7 +179,7 @@ void Set<T> ::insert(const T & in_item)
 * iterator - from the set.
 *************************************/
 template<class T>
-inline void Set<T>::erase(SetIterator<T>& in_location)
+void Set<T> :: erase(SetIterator<T> & in_location)
 {
    int i = 0;
    if (findIndex(*in_location, i))
@@ -187,7 +198,7 @@ inline void Set<T>::erase(SetIterator<T>& in_location)
 * set, returning it as an iterator
 *************************************/
 template<class T>
-inline SetIterator<T> Set<T>::find(T & in_item) const
+SetIterator<T> Set<T> :: find(T & in_item) const
 {
    int index = 0;
 
@@ -203,7 +214,7 @@ inline SetIterator<T> Set<T>::find(T & in_item) const
 * start of the set
 *************************************/
 template <class T>
-SetIterator<T> Set<T> ::begin() const
+SetIterator<T> Set<T> :: begin() const
 {
    return SetIterator<T>(m_data);
 }
@@ -214,7 +225,7 @@ SetIterator<T> Set<T> ::begin() const
 * end of the set
 *************************************/
 template<class T>
-inline SetIterator<T> Set<T>::end() const
+SetIterator<T> Set<T> :: end() const
 {
    return SetIterator<T>(m_data + m_size);
 }
@@ -226,7 +237,7 @@ inline SetIterator<T> Set<T>::end() const
 * set and another (passed as a parameter)
 *************************************/
 template<class T>
-inline Set<T> Set<T>::operator&&(const Set<T>& rhs) const
+Set<T> Set<T> :: operator && (const Set<T> & rhs) const
 {
    assert(isValid());
    assert(rhs.isValid());
@@ -272,7 +283,7 @@ inline Set<T> Set<T>::operator&&(const Set<T>& rhs) const
 * and another (passed as a parameter)
 *************************************/
 template<class T>
-inline Set<T> Set<T>::operator||(const Set<T>& rhs) const
+Set<T> Set<T> :: operator || (const Set<T> & rhs) const
 {
    assert(isValid());
    assert(rhs.isValid());
@@ -315,6 +326,55 @@ inline Set<T> Set<T>::operator||(const Set<T>& rhs) const
    return result;
 }
 
+/************************************
+* SET::DIFFERENCE
+* Creates a new set with all of the
+* elements that appear in the first set
+* and not the second. (passed as a parameter)
+*************************************/
+template<class T>
+Set<T> Set<T> :: operator - (const Set<T> & rhs) const
+{
+   assert(isValid());
+   assert(rhs.isValid());
+
+   Set<T> result;
+
+   // If either side is empty, we can exit now
+   if (empty() || rhs.empty())
+      return result;
+
+   // Now we do our work. This is essentially a merge join
+   int iSet1 = 0;
+   int iSet2 = 0;
+
+   while (iSet1 < m_size || iSet2 < rhs.m_size)
+   {
+      // we check to see if we've run out of either set
+      if (iSet1 == m_size)
+         return result;
+
+      else if (iSet2 == rhs.m_size)
+         result.addToEnd(m_data[iSet1++]);
+
+      //now we look for our elements
+      else if (m_data[iSet1] == rhs.m_data[iSet2])
+      {
+         iSet1++;
+         iSet2++;
+      }
+      else if (m_data[iSet1] < rhs.m_data[iSet2])
+      {
+         result.addToEnd(m_data[iSet1]);
+         iSet1++;
+      }
+      else
+         iSet2++;
+   }
+
+   return result;
+}
+
 /*************************************
 * SET :: FINDINDEX
 * If it exists in the set, returns the
@@ -323,7 +383,7 @@ inline Set<T> Set<T>::operator||(const Set<T>& rhs) const
 * was found.
 *************************************/
 template<class T>
-bool Set<T> ::findIndex(const T & in_item, int & out_index) const
+bool Set<T> :: findIndex(const T & in_item, int & out_index) const
 {
    if (empty())
       return false;
@@ -362,7 +422,7 @@ bool Set<T> ::findIndex(const T & in_item, int & out_index) const
 * is consistent.
 *************************************/
 template<class T>
-inline bool Set<T>::isValid() const
+bool Set<T> :: isValid() const
 {
    bool isValid = true;
 
@@ -380,7 +440,7 @@ inline bool Set<T>::isValid() const
 * set are in the proper sort order
 *************************************/
 template<class T>
-inline bool Set<T>::isDataSorted() const
+bool Set<T> :: isDataSorted() const
 {
    if (!m_capacity)
       return true;
@@ -405,7 +465,7 @@ inline bool Set<T>::isDataSorted() const
 * separately.
 *************************************/
 template<class T>
-inline void Set<T>::deleteData()
+void Set<T> :: deleteData()
 {
    if (m_data != NULL)
    {
@@ -422,7 +482,7 @@ inline void Set<T>::deleteData()
 * done separately.
 *************************************/
 template<class T>
-inline void Set<T>::copy(const Set<T>& source)
+void Set<T> :: copy(const Set<T> & source)
 {
    assert(source.isValid());
 
@@ -448,7 +508,7 @@ inline void Set<T>::copy(const Set<T>& source)
 * capacity; that must be done separately
 *************************************/
 template<class T>
-inline void Set<T>::copyData(T * in_data)
+void Set<T> :: copyData(T * in_data)
 {
    if (m_capacity)
    {
@@ -466,7 +526,7 @@ inline void Set<T>::copyData(T * in_data)
 * must be done separately.
 *************************************/
 template<class T>
-inline void Set<T>::allocate(int in_capacity)
+void Set<T> :: allocate(int in_capacity)
 {
    if (in_capacity)
    {
@@ -488,7 +548,7 @@ inline void Set<T>::allocate(int in_capacity)
 * old buffer into the new.
 *************************************/
 template<class T>
-inline void Set<T>::resize()
+void Set<T> :: resize()
 {
    T * oldData = m_data;
 
@@ -515,7 +575,7 @@ inline void Set<T>::resize()
 * Resizes the set if needed.
 *************************************/
 template<class T>
-inline void Set<T>::addToEnd(const T & in_item)
+void Set<T> :: addToEnd(const T & in_item)
 {
    // check to see if we already have the item at the end
    if (!empty() && m_data[m_size - 1] == in_item)
