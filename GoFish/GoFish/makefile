@@ -1,13 +1,17 @@
 ###############################################################
 # Program:
 #     Week 05, SET
-#     Brother Helfrich, CS235
+#     BrotherJonesL, CS235
 # Author:
-#     <your name here>
+#     Shayla Nelson, Matthew Burr, Kimberly Stowe, Bryan Lopez
 # Summary:
-#     <put a description here>
+#     This program will test the capabilities of our derived
+#	set class.
 # Time:
-#     Matthew Burr: 6 hours
+#	Shayla Nelson: x hours
+#	Matthew Burr: 6 hours
+#	Kimberly Stowe: 4 hours
+#	Bryan Lopez: x hours
 ###############################################################
 
 ##############################################################
