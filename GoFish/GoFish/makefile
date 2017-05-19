@@ -7,7 +7,7 @@
 # Summary:
 #     <put a description here>
 # Time:
-#     <how long did it take to complete this program>?
+#     Matthew Burr: 6 hours
 ###############################################################
 
 ##############################################################
@@ -15,6 +15,13 @@
 ##############################################################
 a.out: week05.o goFish.o card.o
 	g++ -o a.out week05.o goFish.o card.o
+	tar -cf week05.tar *.h *.cpp makefile
+
+##############################################################
+# Release version (turns off asserts)
+##############################################################
+release: week05.o goFish.o card.o
+	g++ -DNDEBUG -o a.out week05.o goFish.o card.o
 	tar -cf week05.tar *.h *.cpp makefile
 
 ##############################################################
