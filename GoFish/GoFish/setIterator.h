@@ -1,10 +1,17 @@
+/***********************************************************************
+* Program:
+*    Week 05, Set
+*    Brother JonesL, CS 235
+* Author:
+*    Shayla Nelson, Matthew Burr, Kimberly Stowe, Bryan Lopez
+* Summary:
+*    This is our setIterator class.
+************************************************************************/
 #ifndef SETITERATOR_H
 #define SETITERATOR_H
 
 #include <cassert>
-/********************************************************************
-* Class: SETITERATOR
-********************************************************************/
+
 template <class T>
 class SetIterator
 {
@@ -56,7 +63,7 @@ public:
    }
 
    // postfix increment
-   SetIterator <T> operator++(int postfix)
+   SetIterator <T> operator ++ (int postfix)
    {
       SetIterator tmp(*this);
       p++;
@@ -71,7 +78,7 @@ public:
    }
 
    // postfix decrement
-   SetIterator <T> operator--(int postfix)
+   SetIterator <T> operator -- (int postfix)
    {
       SetIterator tmp(*this);
       p--;

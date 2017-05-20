@@ -1,9 +1,15 @@
+/***********************************************************************
+* Program:
+*    Week 05, Set
+*    Brother JonesL, CS 235
+* Author:
+*    Shayla Nelson, Matthew Burr, Kimberly Stowe, Bryan Lopez
+* Summary:
+*    This is our constant setIterator class.
+*********************************************************************/
 #ifndef SETCONSTITERATOR_H
 #define SETCONSTITERATOR_H
 
-/*********************************************************************
-* Class: SETCONSTITERATOR
-*********************************************************************/
 template <class T>
 class SetConstIterator
 {
@@ -59,7 +65,7 @@ public:
    }
 
    // postfix decrement
-   SetConstIterator <T> operator--(int postfix)
+   SetConstIterator <T> operator -- (int postfix)
    {
       SetConstIterator tmp(*this);
       p--;
