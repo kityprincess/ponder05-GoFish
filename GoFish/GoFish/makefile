@@ -8,10 +8,10 @@
 #     This program will test the capabilities of our derived
 #	set class.
 # Time:
-#	Shayla Nelson: x hours
-#	Matthew Burr: 6 hours
+#	Shayla Nelson: 6 hours
+#	Matthew Burr: 8 hours
 #	Kimberly Stowe: 4 hours
-#	Bryan Lopez: x hours
+#	Bryan Lopez: 7 hours
 ###############################################################
 
 ##############################################################
